@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPTravel - Custos Mensais CRM Completo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to bottom right, #eff6ff, #e0e7ff);
+            padding: 24px;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 24px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 16px;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            font-size: 0.875rem;
+            color: #1e40af;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card.blue { background: #dbeafe; }
+        .stat-card.green { background: #dcfce7; }
+        .stat-card.purple { background: #f3e8ff; }
+        .stat-card.orange { background: #fed7aa; }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.875rem;
+            font-weight: bold;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .plan-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .plan-card.selected {
+            border-color: #3b82f6;
+        }
+
+        .plan-badge {
+            background: #3b82f6;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .plan-content {
+            padding: 24px;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .plan-desc {
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .plan-users {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        .plan-price {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .price-main {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .price-period {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .price-alt {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .price-alt-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .price-alt-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .price-savings {
+            font-size: 0.75rem;
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+            color: #374151;
+        }
+
+        .feature-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature-icon.check { color: #10b981; }
+        .feature-icon.cross { color: #9ca3af; }
+
+        .select-button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .select-button.selected {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .select-button.unselected {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .select-button:hover {
+            opacity: 0.9;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .detail-box {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .detail-box.blue { background: #eff6ff; }
+        .detail-box.purple { background: #f5f3ff; }
+        .detail-box.green { background: #f0fdf4; }
+
+        .detail-title {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .detail-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        .detail-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .tool-card {
+            padding: 16px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .tool-card.essential {
+            border-color: #bfdbfe;
+            background: white;
+        }
+
+        .tool-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 4px;
+        }
+
+        .tool-detail {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .tool-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 0.625rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .tool-price {
+            text-align: right;
+        }
+
+        .tool-amount {
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .tool-period {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .total-box {
+            background: linear-gradient(to right, #2563eb, #4f46e5);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+        }
+
+        .total-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .total-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+        }
+
+        .total-items {
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+
+        .total-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .total-final {
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .total-final-label {
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
+
+        .total-final-value {
+            font-size: 1.875rem;
+            font-weight: bold;
+        }
+
+        .total-annual {
+            font-size: 0.875rem;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+
+        .savings-badge {
+            background: #10b981;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .comparison-card {
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .comparison-card.hubspot {
+            background: #fff7ed;
+            border-color: #fed7aa;
+        }
+
+        .comparison-card.pipedrive {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .comparison-features {
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+
+        .comparison-feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .best-for-box {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+
+        .hubspot .best-for-box {
+            background: #fed7aa;
+            color: #7c2d12;
+        }
+
+        .pipedrive .best-for-box {
+            background: #bbf7d0;
+            color: #14532d;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(to right, #10b981, #059669);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .recommendation-item ul {
+            list-style: none;
+            font-size: 0.875rem;
+        }
+
+        .recommendation-item li {
+            margin-bottom: 8px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .select-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="card">
+            <h1>SPTravel - Custos Mensais CRM Completo</h1>
+            <p class="subtitle">Análise detalhada: Subscrição + Ferramentas + Manutenção</p>
+            
+            <div class="info-box">
+                <strong>Incluído em todos os planos:</strong> CRM principal, automações com IA, 
+                integração WhatsApp/Email, dashboards, suporte técnico mensal
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card blue">
+                    <div class="stat-label" style="color: #1e40af;">Soluções No-Code</div>
+                    <div class="stat-value" style="color: #1e3a8a;">12</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-label" style="color: #166534;">Custo Implementação</div>
+                    <div class="stat-value" style="color: #14532d;">€10K-€21K</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-label" style="color: #6b21a8;">Custo Mensal</div>
+                    <div class="stat-value" style="color: #581c87;">€488-€4.055</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-label" style="color: #9a3412;">Tempo Setup</div>
+                    <div class="stat-value" style="color: #7c2d12;">2-30 dias</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plans Grid -->
+        <div class="plans-grid" id="plansGrid">
+            <!-- Plans will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Detail Section -->
+        <div class="card">
+            <h2>Detalhamento: <span id="selectedPlanName">PROFESSIONAL</span></h2>
+
+            <div class="detail-grid">
+                <div class="detail-box blue">
+                    <div class="detail-title">
+                        <svg class="detail-icon" fill="currentColor" viewBox="0 0 20 20" style="color: #2563eb;">
+                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path>
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"></path>
+                        </svg>
+                        CRM Principal
+                    </div>
+                    <div id="crmDetail"></div>
+                </div>
+
+                <div class="detail-box purple">
+                    <div class="detail-title">
+                        <svg class="detail-icon" fill="currentColor" viewBox="0 0 20 20" style="color: #7c3aed;">
+                            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"></path>
+                        </svg>
+                        Ferramentas
+                    </div>
+                    <div id="toolsDetail"></div>
+                </div>
+
+                <div class="detail-box green">
+                    <div class="detail-title">
+                        <svg class="detail-icon" fill="currentColor" viewBox="0 0 20 20" style="color: #059669;">
+                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                        </svg>
+                        Manutenção
+                    </div>
+                    <div id="maintenanceDetail"></div>
+                </div>
+            </div>
+
+            <div>
+                <h3>📦 Ferramentas Incluídas</h3>
+                <div class="tools-grid" id="toolsList"></div>
+            </div>
+
+            <div class="total-box">
+                <div class="total-grid">
+                    <div class="total-section">
+                        <h3>💰 TOTAL COM HUBSPOT</h3>
+                        <div class="total-items" id="hubspotBreakdown"></div>
+                        <div class="total-final">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span class="total-final-label">TOTAL MENSAL:</span>
+                                <span class="total-final-value" id="hubspotTotal"></span>
+                            </div>
+                            <div class="total-annual" id="hubspotAnnual"></div>
+                        </div>
+                    </div>
+
+                    <div class="total-section">
+                        <h3>💚 TOTAL COM PIPEDRIVE (RECOMENDADO)</h3>
+                        <div class="total-items" id="pipedriveBreakdown"></div>
+                        <div class="total-final">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span class="total-final-label">TOTAL MENSAL:</span>
+                                <span class="total-final-value" id="pipedriveTotal"></span>
+                            </div>
+                            <div class="total-annual" id="pipedriveAnnual"></div>
+                            <div class="savings-badge" id="savingsBadge"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison -->
+        <div class="card">
+            <h2>🤔 HubSpot vs Pipedrive - Qual Escolher?</h2>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card hubspot">
+                    <h3 style="color: #9a3412;">HubSpot</h3>
+                    <div class="comparison-features">
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Marketing automation integrado</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Plataforma all-in-one completa</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Reporting e analytics avançados</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Ecossistema enorme de integrações</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #ef4444; margin-right: 8px;">✗</span>
+                            <span>Mais caro</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #ef4444; margin-right: 8px;">✗</span>
+                            <span>Curva de aprendizagem maior</span>
+                        </div>
+                    </div>
+                    <div class="best-for-box">
+                        <div style="font-size: 0.75rem; font-weight: 600; margin-bottom: 4px;">Melhor para:</div>
+                        <div>Empresas que precisam de marketing automation completo e têm orçamento</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card pipedrive">
+                    <h3 style="color: #14532d;">Pipedrive ⭐ RECOMENDADO</h3>
+                    <div class="comparison-features">
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Focado em vendas e pipeline</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Interface super intuitiva</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Excelente custo-benefício</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Adoção rápida pela equipa</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #10b981; margin-right: 8px;">✓</span>
+                            <span>Automações suficientes para maioria</span>
+                        </div>
+                        <div class="comparison-feature">
+                            <span style="color: #ef4444; margin-right: 8px;">✗</span>
+                            <span>Marketing básico (precisa ferramentas extra)</span>
+                        </div>
+                    </div>
+                    <div class="best-for-box">
+                        <div style="font-size: 0.75rem; font-weight: 600; margin-bottom: 4px;">Melhor para:</div>
+                        <div>PMEs focadas em vendas que querem simplicidade e economia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recommendation-box">
+            <h2>💡 Recomendações para SPTravel</h2>
+            <div class="recommendation-grid">
+                <div class="recommendation-item">
+                    <h3>Para começar (0-10 clientes):</h3>
+                    <ul>
+                        <li>✓ Plano STARTER com Pipedrive</li>
+                        <li>✓ Custo total: €488/mês</li>
+                        <li>✓ ROI esperado: 3-6 meses</li>
+                    </ul>
+                </div>
+                <div class="recommendation-item">
+                    <h3>Para crescimento (10-50 clientes):</h3>
+                    <ul>
+                        <li>✓ Plano PROFESSIONAL com Pipedrive</li>
+                        <li>✓ Custo total: €1.336/mês</li>
+                        <li>✓ ROI esperado: 6-12 meses</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const plansData = {
+            starter: {
+                nome: "STARTER",
+                descricao: "Para começar com automação básica",
+                usuarios: "3-5 utilizadores",
+                cor: "green",
+                crm: { opcao: "HubSpot CRM + Sales Starter", custoUnitario: 45, usuarios: 5, total: 225 },
+                ferramentas: [
+                    { nome: "Make.com (Pro)", custo: 29, essencial: true },
+                    { nome: "ChatGPT API", custo: 60, essencial: true },
+                    { nome: "Google Workspace Business", custo: 72, essencial: true, detalhe: "6 users × €12" },
+                    { nome: "WhatsApp Business API", custo: 50, essencial: true },
+                    { nome: "Calendly Pro", custo: 10, essencial: false },
+                    { nome: "Mailchimp Essentials", custo: 13, essencial: true },
+                    { nome: "Typeform Plus", custo: 29, essencial: false }
+                ],
+                manutencao: { horas: 8, custoHora: 45, total: 360, descricao: "Suporte básico, ajustes simples" },
+                funcionalidades: [
+                    "CRM básico com pipeline",
+                    "Follow-ups automáticos",
+                    "Emails personalizados com IA",
+                    "WhatsApp integrado",
+                    "Formulários de contacto",
+                    "Suporte 8h/mês"
+                ],
+                naoInclui: ["Dashboard avançado", "Previsão de vendas IA", "Automações complexas", "Chatbot avançado"],
+                pipedrive: { nome: "Pipedrive Essential", custoUnitario: 14, usuarios: 5, total: 70, economia: 155 }
+            },
+            professional: {
+                nome: "PROFESSIONAL",
+                descricao: "Solução completa para crescimento",
+                usuarios: "5-10 utilizadores",
+                cor: "blue",
+                crm: { opcao: "HubSpot CRM + Sales Professional", custoUnitario: 90, usuarios: 5, total: 450 },
+                ferramentas: [
+                    { nome: "Make.com (Teams)", custo: 69, essencial: true },
+                    { nome: "ChatGPT API (maior uso)", custo: 150, essencial: true },
+                    { nome: "Google Workspace Business", custo: 144, essencial: true, detalhe: "12 users × €12" },
+                    { nome: "WhatsApp Business API", custo: 80, essencial: true },
+                    { nome: "Calendly Pro", custo: 40, essencial: true, detalhe: "4 users × €10" },
+                    { nome: "Mailchimp Standard", custo: 20, essencial: true },
+                    { nome: "Typeform Pro", custo: 59, essencial: true },
+                    { nome: "Airtable Pro", custo: 40, essencial: true, detalhe: "2 users × €20" },
+                    { nome: "Looker Studio", custo: 0, essencial: true, detalhe: "Gratuito" },
+                    { nome: "Slack Pro", custo: 64, essencial: true, detalhe: "8 users × €8" },
+                    { nome: "Twilio (SMS)", custo: 50, essencial: false }
+                ],
+                manutencao: { horas: 16, custoHora: 50, total: 800, descricao: "Suporte prioritário, otimizações mensais" },
+                funcionalidades: [
+                    "Tudo do Starter +",
+                    "IA Preditiva de vendas",
+                    "Automações complexas",
+                    "Dashboard executivo",
+                    "Chatbot interno",
+                    "Segmentação avançada",
+                    "Relatórios customizados",
+                    "Suporte 16h/mês"
+                ],
+                naoInclui: ["Gestão de RH completa", "Integração ERP custom"],
+                pipedrive: { nome: "Pipedrive Advanced", custoUnitario: 34, usuarios: 5, total: 170, economia: 280 }
+            },
+            enterprise: {
+                nome: "ENTERPRISE",
+                descricao: "Solução corporativa all-in-one",
+                usuarios: "10-20 utilizadores",
+                cor: "purple",
+                crm: { opcao: "HubSpot CRM + Sales Enterprise", custoUnitario: 150, usuarios: 10, total: 1500 },
+                ferramentas: [
+                    { nome: "Make.com (Enterprise)", custo: 299, essencial: true },
+                    { nome: "ChatGPT API (uso intenso)", custo: 300, essencial: true },
+                    { nome: "Claude API (backup)", custo: 150, essencial: true },
+                    { nome: "Google Workspace Enterprise", custo: 360, essencial: true, detalhe: "20 users × €18" },
+                    { nome: "WhatsApp Business API", custo: 150, essencial: true },
+                    { nome: "Calendly Pro", custo: 100, essencial: true, detalhe: "10 users × €10" },
+                    { nome: "Mailchimp Premium", custo: 350, essencial: true },
+                    { nome: "Typeform Enterprise", custo: 99, essencial: true },
+                    { nome: "Airtable Enterprise", custo: 160, essencial: true, detalhe: "8 users × €20" },
+                    { nome: "Slack Business+", custo: 240, essencial: true, detalhe: "20 users × €12" },
+                    { nome: "Twilio (SMS/Voice)", custo: 150, essencial: true },
+                    { nome: "Zapier Teams", custo: 149, essencial: false },
+                    { nome: "Monday.com", custo: 160, essencial: true, detalhe: "10 users × €16" },
+                    { nome: "Notion Team", custo: 100, essencial: true, detalhe: "10 users × €10" },
+                    { nome: "Zendesk Suite", custo: 198, essencial: false, detalhe: "3 agents × €66" }
+                ],
+                manutencao: { horas: 30, custoHora: 60, total: 1800, descricao: "Suporte dedicado, desenvolvimento contínuo" },
+                funcionalidades: [
+                    "Tudo do Professional +",
+                    "Integrações ERP custom",
+                    "Chatbot multicanal avançado",
+                    "IA de RH completa",
+                    "Análise preditiva avançada",
+                    "Automações ilimitadas",
+                    "Onboarding completo",
+                    "Account manager dedicado",
+                    "Suporte 30h/mês",
+                    "SLA garantido"
+                ],
+                naoInclui: ["Desenvolvimento de features custom"],
+                pipedrive: { nome: "Pipedrive Enterprise", custoUnitario: 99, usuarios: 10, total: 990, economia: 510 }
+            }
+        };
+
+        let selectedPlan = 'professional';
+
+        function calculateTotal(plan) {
+            const ferramentasTotal = plan.ferramentas.reduce((acc, f) => acc + f.custo, 0);
+            return plan.crm.total + ferramentasTotal + plan.manutencao.total;
+        }
+
+        function calculateTotalPipedrive(planKey) {
+            const plan = plansData[planKey];
+            const ferramentasTotal = plan.ferramentas.reduce((acc, f) => acc + f.custo, 0);
+            return plan.pipedrive.total + ferramentasTotal + plan.manutencao.total;
+        }
+
+        function renderPlans() {
+            const grid = document.getElementById('plansGrid');
+            grid.innerHTML = '';
+
+            Object.entries(plansData).forEach(([key, plan]) => {
+                const total = calculateTotal(plan);
+                const totalPipedrive = calculateTotalPipedrive(key);
+                const isSelected = selectedPlan === key;
+
+                const card = document.createElement('div');
+                card.className = `plan-card ${isSelected ? 'selected' : ''}`;
+                card.onclick = () => selectPlan(key);
+
+                let html = '';
+                if (key === 'professional') {
+                    html += '<div class="plan-badge">⭐ MAIS VENDIDO</div>';
+                }
+
+                html += `
+                    <div class="plan-content">
+                        <div class="plan-name" style="color: #1f2937;">${plan.nome}</div>
+                        <div class="plan-desc">${plan.descricao}</div>
+                        <div class="plan-users">
+                            <svg style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                            </svg>
+                            <span>${plan.usuarios}</span>
+                        </div>
+
+                        <div class="plan-price">
+                            <div class="price-main">€${total.toLocaleString()}</div>
+                            <div class="price-period">por mês</div>
+                            <div class="price-alt">
+                                <div class="price-alt-label">Com Pipedrive:</div>
+                                <div class="price-alt-value">€${totalPipedrive.toLocaleString()}</div>
+                                <div class="price-savings">(poupa €${plan.pipedrive.economia}/mês)</div>
+                            </div>
+                        </div>
+
+                        <ul class="features-list">
+                `;
+
+                plan.funcionalidades.forEach(func => {
+                    html += `
+                        <li>
+                            <svg class="feature-icon check" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            ${func}
+                        </li>
+                    `;
+                });
+
+                plan.naoInclui.forEach(item => {
+                    html += `
+                        <li>
+                            <svg class="feature-icon cross" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                            ${item}
+                        </li>
+                    `;
+                });
+
+                html += `
+                        </ul>
+                        <button class="select-button ${isSelected ? 'selected' : 'unselected'}">
+                            ${isSelected ? 'Selecionado ✓' : 'Ver Detalhes'}
+                        </button>
+                    </div>
+                `;
+
+                card.innerHTML = html;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectPlan(planKey) {
+            selectedPlan = planKey;
+            renderPlans();
+            renderDetails();
+        }
+
+        function renderDetails() {
+            const plan = plansData[selectedPlan];
+            const ferramentasTotal = plan.ferramentas.reduce((acc, f) => acc + f.custo, 0);
+            const totalHubspot = calculateTotal(plan);
+            const totalPipedrive = calculateTotalPipedrive(selectedPlan);
+
+            // Update plan name
+            document.getElementById('selectedPlanName').textContent = plan.nome;
+
+            // CRM Detail
+            document.getElementById('crmDetail').innerHTML = `
+                <div>
+                    <div style="font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px;">
+                        ${plan.crm.opcao}
+                    </div>
+                    <div style="font-size: 0.75rem; color: #6b7280;">
+                        ${plan.crm.usuarios} users × €${plan.crm.custoUnitario}
+                    </div>
+                </div>
+                <div class="detail-value" style="color: #1e3a8a;">€${plan.crm.total}/mês</div>
+                <div style="padding-top: 12px; margin-top: 12px; border-top: 1px solid #bfdbfe;">
+                    <div style="font-size: 0.75rem; font-weight: 500; color: #374151; margin-bottom: 4px;">
+                        Alternativa Pipedrive:
+                    </div>
+                    <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 4px;">
+                        ${plan.pipedrive.nome}
+                    </div>
+                    <div style="font-size: 1.25rem; font-weight: bold; color: #059669;">
+                        €${plan.pipedrive.total}/mês
+                    </div>
+                    <div style="font-size: 0.75rem; color: #059669; font-weight: 600; margin-top: 4px;">
+                        Economia: €${plan.pipedrive.economia}/mês
+                    </div>
+                </div>
+            `;
+
+            // Tools Detail
+            const essentialCount = plan.ferramentas.filter(f => f.essencial).length;
+            const optionalCount = plan.ferramentas.filter(f => !f.essencial).length;
+            document.getElementById('toolsDetail').innerHTML = `
+                <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 12px;">
+                    ${essentialCount} essenciais${optionalCount > 0 ? ` + ${optionalCount} opcionais` : ''}
+                </div>
+                <div class="detail-value" style="color: #6b21a8;">€${ferramentasTotal}/mês</div>
+            `;
+
+            // Maintenance Detail
+            document.getElementById('maintenanceDetail').innerHTML = `
+                <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 4px;">
+                    ${plan.manutencao.horas}h/mês × €${plan.manutencao.custoHora}/h
+                </div>
+                <div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 8px;">
+                    ${plan.manutencao.descricao}
+                </div>
+                <div class="detail-value" style="color: #047857;">€${plan.manutencao.total}/mês</div>
+            `;
+
+            // Tools List
+            const toolsList = document.getElementById('toolsList');
+            toolsList.innerHTML = '';
+            plan.ferramentas.forEach(ferr => {
+                const toolCard = document.createElement('div');
+                toolCard.className = `tool-card ${ferr.essencial ? 'essential' : ''}`;
+                toolCard.innerHTML = `
+                    <div style="flex: 1;">
+                        <div class="tool-name">${ferr.nome}</div>
+                        ${ferr.detalhe ? `<div class="tool-detail">${ferr.detalhe}</div>` : ''}
+                        ${ferr.essencial ? '<span class="tool-badge">Essencial</span>' : ''}
+                    </div>
+                    <div class="tool-price">
+                        <div class="tool-amount">€${ferr.custo}</div>
+                        <div class="tool-period">/mês</div>
+                    </div>
+                `;
+                toolsList.appendChild(toolCard);
+            });
+
+            // HubSpot Breakdown
+            document.getElementById('hubspotBreakdown').innerHTML = `
+                <div class="total-item">
+                    <span>CRM (HubSpot):</span>
+                    <span style="font-weight: 500;">€${plan.crm.total}</span>
+                </div>
+                <div class="total-item">
+                    <span>Ferramentas:</span>
+                    <span style="font-weight: 500;">€${ferramentasTotal}</span>
+                </div>
+                <div class="total-item">
+                    <span>Manutenção:</span>
+                    <span style="font-weight: 500;">€${plan.manutencao.total}</span>
+                </div>
+            `;
+            document.getElementById('hubspotTotal').textContent = `€${totalHubspot.toLocaleString()}`;
+            document.getElementById('hubspotAnnual').textContent = `Anual: €${(totalHubspot * 12).toLocaleString()}`;
+
+            // Pipedrive Breakdown
+            document.getElementById('pipedriveBreakdown').innerHTML = `
+                <div class="total-item">
+                    <span>CRM (Pipedrive):</span>
+                    <span style="font-weight: 500;">€${plan.pipedrive.total}</span>
+                </div>
+                <div class="total-item">
+                    <span>Ferramentas:</span>
+                    <span style="font-weight: 500;">€${ferramentasTotal}</span>
+                </div>
+                <div class="total-item">
+                    <span>Manutenção:</span>
+                    <span style="font-weight: 500;">€${plan.manutencao.total}</span>
+                </div>
+            `;
+            document.getElementById('pipedriveTotal').textContent = `€${totalPipedrive.toLocaleString()}`;
+            document.getElementById('pipedriveAnnual').textContent = `Anual: €${(totalPipedrive * 12).toLocaleString()}`;
+            document.getElementById('savingsBadge').textContent = `POUPA €${plan.pipedrive.economia * 12}/ano`;
+        }
+
+        // Initialize
+        renderPlans();
+        renderDetails();
+    </script>
+</body>
+</html>
